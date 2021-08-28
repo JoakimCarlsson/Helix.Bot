@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Helix.Domain.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,18 +21,28 @@ namespace Helix.Bot
         private readonly IConfiguration _configuration;
         private readonly SlashService _slashService;
         private readonly DiscordGatewayClient _discordGatewayClient;
+        private readonly HelixDbContext _dbContext;
 
-        public BotClient(ILogger<BotClient> logger, IConfiguration configuration, SlashService slashService, DiscordGatewayClient discordGatewayClient)
+        public BotClient(ILogger<BotClient> logger, IConfiguration configuration, SlashService slashService, DiscordGatewayClient discordGatewayClient, HelixDbContext dbContext)
         {
             _logger = logger;
             _configuration = configuration;
             _slashService = slashService;
             _discordGatewayClient = discordGatewayClient;
+            _dbContext = dbContext;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting service");
+
+            var migrations = await _dbContext.Database.GetPendingMigrationsAsync(cancellationToken);
+            if (migrations.Any())
+            {
+                _logger.LogInformation("Applying Migrations: {pending}", migrations);
+                await _dbContext.Database.MigrateAsync(cancellationToken);
+            }
+
             Snowflake? debugGuild = null;
 #if DEBUG
             var debugGuildId = _configuration["DiscordConfiguration:DebugGuildId"];

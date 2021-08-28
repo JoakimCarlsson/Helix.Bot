@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helix.Domain", "Helix.Domai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helix.Core", "Helix.Core\Helix.Core.csproj", "{F710130F-5BE0-4CAE-927F-4BD4FC719780}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helix.Core.Test", "Helix.Core.Test\Helix.Core.Test.csproj", "{60596090-0338-48A6-976A-CBA2E7E31E37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{F710130F-5BE0-4CAE-927F-4BD4FC719780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F710130F-5BE0-4CAE-927F-4BD4FC719780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F710130F-5BE0-4CAE-927F-4BD4FC719780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60596090-0338-48A6-976A-CBA2E7E31E37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60596090-0338-48A6-976A-CBA2E7E31E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60596090-0338-48A6-976A-CBA2E7E31E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60596090-0338-48A6-976A-CBA2E7E31E37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{53CA6897-0DF8-40FC-9A49-2D9A406F2E1E} = {E2F0E991-713A-4EF7-A041-8CCC7AF7372F}
 		{0DFAB252-1726-499E-9FA7-5755AF0D6B4F} = {E2F0E991-713A-4EF7-A041-8CCC7AF7372F}
 		{F710130F-5BE0-4CAE-927F-4BD4FC719780} = {E2F0E991-713A-4EF7-A041-8CCC7AF7372F}
+		{60596090-0338-48A6-976A-CBA2E7E31E37} = {C69DCDA8-529E-4779-9690-C4DB31A57DBC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A4250C8B-B187-4800-B915-10C9C2EFFBB1}
