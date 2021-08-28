@@ -108,7 +108,7 @@ namespace Helix.Core.Test
             actual.Entity.Should().Be(true);
         }
 
-        private HelixDbContext CreateDbContext()
+      private HelixDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<HelixDbContext>().UseSqlite($"Data Source=Helix-Test{Guid.NewGuid()}.db;");
             var dbContext = new HelixDbContext(optionsBuilder.Options);
