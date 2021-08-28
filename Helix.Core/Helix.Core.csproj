@@ -25,4 +25,10 @@
   <ProjectReference Include="..\Helix.Domain\Helix.Domain.csproj" />
 </ItemGroup>
 
+<ItemGroup>
+  <Folder Include="Abstractions\" />
+  <Folder Include="Services\" />
+  <Folder Include="Responders\" />
+</ItemGroup>
+
 </Project>
