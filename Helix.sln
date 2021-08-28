@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E2F0E991-713A-4EF7-A041-8CCC7AF7372F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C69DCDA8-529E-4779-9690-C4DB31A57DBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helix.Bot", "Helix.Bot\Helix.Bot.csproj", "{64313492-12D9-408B-B816-653C008EEF4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helix.Core", "Helix.Core\Helix.Core.csproj", "{91CEDAC0-FBB5-4635-AEAD-7D3A65C4047B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64313492-12D9-408B-B816-653C008EEF4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64313492-12D9-408B-B816-653C008EEF4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64313492-12D9-408B-B816-653C008EEF4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64313492-12D9-408B-B816-653C008EEF4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91CEDAC0-FBB5-4635-AEAD-7D3A65C4047B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91CEDAC0-FBB5-4635-AEAD-7D3A65C4047B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91CEDAC0-FBB5-4635-AEAD-7D3A65C4047B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91CEDAC0-FBB5-4635-AEAD-7D3A65C4047B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{64313492-12D9-408B-B816-653C008EEF4D} = {E2F0E991-713A-4EF7-A041-8CCC7AF7372F}
+		{91CEDAC0-FBB5-4635-AEAD-7D3A65C4047B} = {E2F0E991-713A-4EF7-A041-8CCC7AF7372F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A4250C8B-B187-4800-B915-10C9C2EFFBB1}
+	EndGlobalSection
+EndGlobal
