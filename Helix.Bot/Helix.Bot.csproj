@@ -8,7 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
-    <ProjectReference Include="..\Helix.Core\Helix.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Helix.Core\Helix.Core.csproj" />
+    <ProjectReference Include="..\Helix.Module.Reminder\Helix.Module.Reminder.csproj" />
+  </ItemGroup>
+  
 </Project>
