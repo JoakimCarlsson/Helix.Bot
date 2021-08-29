@@ -30,12 +30,6 @@ namespace Helix.Benchmark
             return await _guildService.AddGuildAsync(500);
         }
 
-        [Benchmark]
-        public async ValueTask<ServiceResponse<Guild>> AddGuildValueTask()
-        {
-            return await _guildService.AddGuildValueTaskAsync(500);
-        }
-
         private HelixDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<HelixDbContext>().UseSqlite($"Data Source=Helix-Test{Guid.NewGuid()}.db;");
