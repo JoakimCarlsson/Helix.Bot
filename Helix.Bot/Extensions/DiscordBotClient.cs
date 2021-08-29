@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Helix.Core;
-using Helix.Module.Reminder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Remora.Commands.Extensions;
@@ -36,7 +31,6 @@ namespace Helix.Bot.Extensions
                 .Configure<CommandResponderOptions>(o => o.Prefix = ">!");
 
             services.AddDefaultCoreModule(configuration);
-            services.AddDefaultReminderModule();
 
             services.AddInteractionResponder(x => x.SuppressAutomaticResponses = suppressAutomaticResponses);
 

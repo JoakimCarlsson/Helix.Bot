@@ -25,11 +25,11 @@ namespace Helix.Core.Services
             _logger = logger;
         }
 
-        public async Task<ServiceResponse<Guild>> AddGuild(ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<Guild>> AddGuildAsync(ulong guildId, CancellationToken cancellationToken = default)
         {
             try
             {
-                var guildExist = await GuildExists(guildId, cancellationToken);
+                var guildExist = await GuildExistsAsync(guildId, cancellationToken);
                 if (guildExist.Entity)
                     return ServiceResponse<Guild>.Fail(new ErrorResult("Guild already exist."));
 
@@ -53,7 +53,7 @@ namespace Helix.Core.Services
             }
         }
 
-        public async Task<ServiceResponse<bool>> GuildExists(ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<bool>> GuildExistsAsync(ulong guildId, CancellationToken cancellationToken = default)
         {
             var guild = await _dbContext.Guilds.FirstOrDefaultAsync(x => x.Id == guildId, cancellationToken);
             if (guild is null)

@@ -22,13 +22,13 @@ namespace Helix.Core.Responders
 
         public async Task<Result> RespondAsync(IGuildMemberAdd gatewayEvent, CancellationToken ct = new CancellationToken())
         {
-            await _userService.AddUser(gatewayEvent.User.Value.ID.Value, gatewayEvent.GuildID.Value, gatewayEvent.JoinedAt.DateTime, ct);
+            await _userService.AddUserAsync(gatewayEvent.User.Value.ID.Value, gatewayEvent.GuildID.Value, gatewayEvent.JoinedAt.DateTime, ct);
             return Result.FromSuccess();
         }
 
         public async Task<Result> RespondAsync(IGuildMemberRemove gatewayEvent, CancellationToken ct = new CancellationToken())
         {
-            await _userService.DeleteUser(gatewayEvent.User.ID.Value, gatewayEvent.GuildID.Value, ct);
+            await _userService.DeleteUserAsync(gatewayEvent.User.ID.Value, gatewayEvent.GuildID.Value, ct);
             return Result.FromSuccess();
         }
     }

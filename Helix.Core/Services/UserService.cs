@@ -26,11 +26,11 @@ namespace Helix.Core.Services
             _logger = logger;
         }
 
-        public async Task<ServiceResponse<User>> AddUser(ulong userId, ulong guildId, DateTime firstSeen, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<User>> AddUserAsync(ulong userId, ulong guildId, DateTime firstSeen, CancellationToken cancellationToken = default)
         {
             try
             {
-                var userExist = await UserExist(userId, guildId, cancellationToken);
+                var userExist = await UserExistAsync(userId, guildId, cancellationToken);
                 if (userExist.Entity)
                     return ServiceResponse<User>.Fail(new ErrorResult("User already exist."));
 
@@ -55,9 +55,9 @@ namespace Helix.Core.Services
             }
         }
 
-        public async Task<ServiceResponse<User>> GetUser(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<User>> GetUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
         {
-            var userExist = await UserExist(userId, guildId, cancellationToken);
+            var userExist = await UserExistAsync(userId, guildId, cancellationToken);
             if (!userExist.Entity)
                 return ServiceResponse<User>.Fail(new ErrorResult("User does not exist."));
 
@@ -70,15 +70,15 @@ namespace Helix.Core.Services
             return ServiceResponse<User>.Ok(user);
         }
 
-        public async Task<ServiceResponse> DeleteUser(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse> DeleteUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
         {
             try
             {
-                var userExist = await UserExist(userId, guildId, cancellationToken);
+                var userExist = await UserExistAsync(userId, guildId, cancellationToken);
                 if (!userExist.Entity)
                     return ServiceResponse.Fail(new ErrorResult("Can't delete a user that does not exist"));
 
-                var user = await GetUser(userId, guildId, cancellationToken);
+                var user = await GetUserAsync(userId, guildId, cancellationToken);
 
                 _dbContext.Remove(user.Entity);
                 await _dbContext.SaveChangesAsync(cancellationToken);
@@ -94,7 +94,7 @@ namespace Helix.Core.Services
             }
         }
 
-        public async Task<ServiceResponse<bool>> UserExist(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<bool>> UserExistAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
         {
             var userExists = _appCache.Get<ServiceResponse<bool>>($"userExist:{userId}:{guildId}");
             if (userExists is not null)

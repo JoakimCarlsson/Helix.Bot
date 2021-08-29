@@ -18,7 +18,7 @@ namespace Helix.Core.Responders
         
         public async Task<Result> RespondAsync(IGuildCreate gatewayEvent, CancellationToken ct = new CancellationToken())
         {
-            await _guildService.AddGuild(gatewayEvent.ID.Value, ct);
+            await _guildService.AddGuildAsync(gatewayEvent.ID.Value, ct);
             return Result.FromSuccess();
         }
     }

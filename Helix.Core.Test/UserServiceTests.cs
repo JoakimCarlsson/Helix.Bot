@@ -34,7 +34,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var actual = await sut.GetUser(600, 500);
+            var actual = await sut.GetUserAsync(600, 500);
             
             //Assert
             actual.Entity.Should().NotBeNull();
@@ -48,7 +48,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var actual = await sut.GetUser(1, 500);
+            var actual = await sut.GetUserAsync(1, 500);
             
             //Assert
             actual.Success.Should().BeFalse();
@@ -64,7 +64,7 @@ namespace Helix.Core.Test
             
             //Act
             var actual = _appCache.Get<User>($"user:{600}:{500}");
-            var user = await sut.GetUser(600, 500);
+            var user = await sut.GetUserAsync(600, 500);
             var expected = _appCache.Get<User>($"user:{600}:{500}");
             
             //Assert
@@ -80,7 +80,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var expected = await sut.AddUser(1, 500, DateTime.Now);
+            var expected = await sut.AddUserAsync(1, 500, DateTime.Now);
             
             //Assert
             expected.Should().NotBeNull();
@@ -93,7 +93,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var expected = await sut.DeleteUser(600, 500);
+            var expected = await sut.DeleteUserAsync(600, 500);
             
             //Assert
             expected.Success.Should().BeTrue();
@@ -106,7 +106,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var expected = await sut.DeleteUser(69, 500);
+            var expected = await sut.DeleteUserAsync(69, 500);
             
             //Assert
             expected.Success.Should().BeFalse();
@@ -120,7 +120,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            await sut.DeleteUser(1337, 500);
+            await sut.DeleteUserAsync(1337, 500);
             
             var expectedUserCache = _appCache.Get<User>($"user:{1337}:{500}");
             var expectedUserExistCache = _appCache.Get<User>($"userExist:{1337}:{500}");
@@ -137,7 +137,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var actual = await sut.DeleteUser(600, 200);
+            var actual = await sut.DeleteUserAsync(600, 200);
             
             //Assert
             actual.Success.Should().BeFalse();
@@ -151,7 +151,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var expected = await sut.AddUser(0, 0, DateTime.Now);
+            var expected = await sut.AddUserAsync(0, 0, DateTime.Now);
             
             //Assert
             expected.Success.Should().BeFalse();
@@ -165,7 +165,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var expected = await sut.AddUser(600, 500, DateTime.Now);
+            var expected = await sut.AddUserAsync(600, 500, DateTime.Now);
             
             //Assert
             expected.Success.Should().BeFalse();
@@ -180,7 +180,7 @@ namespace Helix.Core.Test
             
             //Act
             var actual = _appCache.Get<User>($"user:{200}:{500}");
-            await sut.AddUser(200, 500, DateTime.Now);
+            await sut.AddUserAsync(200, 500, DateTime.Now);
             var expected = _appCache.Get<User>($"user:{200}:{500}");
 
             //Assert
@@ -194,7 +194,7 @@ namespace Helix.Core.Test
             //Arrange
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
             //Act
-            var actual = await sut.UserExist(600, 500);
+            var actual = await sut.UserExistAsync(600, 500);
             
             //Assert
             actual.Success.Should().BeTrue();
@@ -208,7 +208,7 @@ namespace Helix.Core.Test
             var sut = new UserService(_dbContext, _appCache, _loggerMock.Object);
         
             //Act
-            var actual = await sut.UserExist(1, 2);
+            var actual = await sut.UserExistAsync(1, 2);
             
             //Assert
             actual.Success.Should().BeTrue();
@@ -223,7 +223,7 @@ namespace Helix.Core.Test
 
             //Act
             var actual = _appCache.Get<ServiceResponse<bool>>($"userExist:{1}:{1}");
-            await sut.UserExist(1, 1);
+            await sut.UserExistAsync(1, 1);
             var expected = _appCache.Get<ServiceResponse<bool>>($"userExist:{1}:{1}");
             
             //Assert
@@ -240,7 +240,7 @@ namespace Helix.Core.Test
             _appCache.Add($"userExist:{1}:{1}", foo);
             
             //Act
-            var actual = await sut.UserExist(1, 1);
+            var actual = await sut.UserExistAsync(1, 1);
             //Assert
             actual.Success.Should().BeTrue();
         }

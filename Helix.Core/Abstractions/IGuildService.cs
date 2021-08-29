@@ -7,7 +7,7 @@ namespace Helix.Core.Abstractions
 {
     public interface IGuildService
     {
-        public Task<ServiceResponse<Guild>> AddGuild(ulong guildId, CancellationToken cancellationToken = default);
-        public Task<ServiceResponse<bool>> GuildExists(ulong guildId, CancellationToken cancellationToken = default);
+        public Task<ServiceResponse<Guild>> AddGuildAsync(ulong guildId, CancellationToken cancellationToken = default);
+        public Task<ServiceResponse<bool>> GuildExistsAsync(ulong guildId, CancellationToken cancellationToken = default);
     }
 }

@@ -32,7 +32,7 @@ namespace Helix.Core.Test
             var sut = new GuildService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var actual = await sut.AddGuild(500);
+            var actual = await sut.AddGuildAsync(500);
             
             //Assert
             actual.Entity.Should().NotBeNull();
@@ -45,10 +45,10 @@ namespace Helix.Core.Test
         {
             //Arrange
             var sut = new GuildService(_dbContext, _appCache, _loggerMock.Object);
-            await sut.AddGuild(500);
+            await sut.AddGuildAsync(500);
             
             //Act
-            var actual = await sut.AddGuild(500);
+            var actual = await sut.AddGuildAsync(500);
             
             //Assert
             actual.Success.Should().Be(false);
@@ -61,7 +61,7 @@ namespace Helix.Core.Test
             //Arrange
             var sut = new GuildService(_dbContext, _appCache, _loggerMock.Object);
             //Act
-            var actual = await sut.AddGuild(0);
+            var actual = await sut.AddGuildAsync(0);
             
             //Assert
             actual.Success.Should().Be(false);
@@ -75,7 +75,7 @@ namespace Helix.Core.Test
             var sut = new GuildService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var actual = await sut.AddGuild(500);
+            var actual = await sut.AddGuildAsync(500);
             var expected = _appCache.Get<Guild>($"Guild:{actual.Entity.Id}");
             //Assert
 
@@ -89,7 +89,7 @@ namespace Helix.Core.Test
             var sut = new GuildService(_dbContext, _appCache, _loggerMock.Object);
             
             //Act
-            var actual = await sut.GuildExists(500);
+            var actual = await sut.GuildExistsAsync(500);
             
             //Assert
             actual.Entity.Should().Be(false);
@@ -100,9 +100,9 @@ namespace Helix.Core.Test
         {
             //Arrange
             var sut = new GuildService(_dbContext, _appCache, _loggerMock.Object);
-            await sut.AddGuild(500);
+            await sut.AddGuildAsync(500);
             //Act
-            var actual = await sut.GuildExists(500);
+            var actual = await sut.GuildExistsAsync(500);
             
             //Assert
             actual.Entity.Should().Be(true);
