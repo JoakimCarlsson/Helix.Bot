@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Helix.Core\Helix.Core.csproj" />
-    <ProjectReference Include="..\Helix.Module.Reminder\Helix.Module.Reminder.csproj" />
   </ItemGroup>
   
 </Project>
