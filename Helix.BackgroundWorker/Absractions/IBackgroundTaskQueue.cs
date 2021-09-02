@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace Helix.BackgroundWorker.Absractions
 {
-    interface IBackgroundTaskQueue
+    public interface IBackgroundTaskQueue
     {
-        ValueTask QueueAsync(Func<CancellationToken, ValueTask> workItem);
-        ValueTask<Func<CancellationToken, ValueTask>> DequeueAsync(CancellationToken cancellationToken);
+        ValueTask QueueAsync(IWorkEvent workEvent);
+        ValueTask<IWorkEvent> DequeueAsync(CancellationToken cancellationToken);
     }
 }

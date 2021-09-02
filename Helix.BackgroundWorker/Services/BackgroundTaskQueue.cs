@@ -9,9 +9,9 @@ using Helix.BackgroundWorker.Absractions;
 
 namespace Helix.BackgroundWorker.Services
 {
-    class BackgroundTaskQueue : IBackgroundTaskQueue
+    public class BackgroundTaskQueue : IBackgroundTaskQueue
     {
-        private readonly Channel<Func<CancellationToken, ValueTask>> _queue;
+        private readonly Channel<IWorkEvent> _queue;
 
         public BackgroundTaskQueue()
         {
@@ -19,10 +19,10 @@ namespace Helix.BackgroundWorker.Services
             {
                 FullMode = BoundedChannelFullMode.DropOldest
             };
-            _queue = Channel.CreateBounded<Func<CancellationToken, ValueTask>>(options);
+            _queue = Channel.CreateBounded<IWorkEvent>(options);
         }
 
-        public async ValueTask QueueAsync(Func<CancellationToken, ValueTask> workEvent)
+        public async ValueTask QueueAsync(IWorkEvent workEvent)
         {
             if (workEvent == null)
                 throw new ArgumentNullException(nameof(workEvent));
@@ -30,7 +30,7 @@ namespace Helix.BackgroundWorker.Services
             await _queue.Writer.WriteAsync(workEvent);
         }
 
-        public async ValueTask<Func<CancellationToken, ValueTask>> DequeueAsync(CancellationToken cancellationToken)
+        public async ValueTask<IWorkEvent> DequeueAsync(CancellationToken cancellationToken)
         {
             var workEvent = await _queue.Reader.ReadAsync(cancellationToken);
             return workEvent;

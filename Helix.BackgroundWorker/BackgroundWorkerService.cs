@@ -11,12 +11,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Helix.BackgroundWorker
 {
+    //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-5.0&tabs=visual-studio
     class BackgroundWorkerService : BackgroundService
     {
         private readonly ILogger<BackgroundWorkerService> _logger;
         private readonly IBackgroundTaskQueue _backgroundTaskQueue;
 
-        public BackgroundWorkerService(ILogger<BackgroundWorkerService> logger, IBackgroundTaskQueue backgroundTaskQueue)
+        public BackgroundWorkerService(ILogger<BackgroundWorkerService> logger, IBackgroundTaskQueue backgroundTaskQueue, IServiceProvider services)
         {
             _logger = logger;
             _backgroundTaskQueue = backgroundTaskQueue;
@@ -35,11 +36,11 @@ namespace Helix.BackgroundWorker
                 var workEvent = await _backgroundTaskQueue.DequeueAsync(cancellationToken);
                 try
                 {
-                    await workEvent(cancellationToken);
+                    _logger.LogInformation("Executing {workEvent}", workEvent);
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError("Error occurred executing {item}\n{ex}", nameof(workEvent), e);
+                    _logger.LogError("Error occurred executing {item}\n{ex}", workEvent, e);
                 }
             }
         }
