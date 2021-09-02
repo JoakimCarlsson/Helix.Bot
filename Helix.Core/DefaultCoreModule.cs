@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Helix.BackgroundWorker.Extensions;
 using Helix.Core.Abstractions;
 using Helix.Core.Services;
 using Helix.Domain;
@@ -13,6 +14,7 @@ namespace Helix.Core
         public static IServiceCollection AddDefaultCoreModule(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddLazyCache();
+            services.AddBackgroundQueue();
             services.AddDefaultDomainModule(configuration);
             services.AddScoped<IGuildService, GuildService>();
             services.AddScoped<IUserService, UserService>();
