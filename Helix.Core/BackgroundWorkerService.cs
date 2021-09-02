@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Helix.BackgroundWorker.Absractions;
+using Helix.Core.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Remora.Discord.API.Abstractions.Objects;
 
-namespace Helix.BackgroundWorker
+namespace Helix.Core
 {
     //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-5.0&tabs=visual-studio
     class BackgroundWorkerService : BackgroundService
@@ -46,8 +43,15 @@ namespace Helix.BackgroundWorker
                     switch (workEvent)
                     {
                         case AddGuildEvent addGuildEvent:
-
+                            await services.GetRequiredService<IGuildService>().AddGuildAsync(addGuildEvent.GuildId, cancellationToken);
                             break;
+                        case AddGuildMemberEvent addGuildMemberEvent:
+                            await services.GetRequiredService<IUserService>().AddUserAsync(addGuildMemberEvent.UserId, addGuildMemberEvent.GuildId, addGuildMemberEvent.FirstSeen, cancellationToken);
+                            break;
+                        case RemoveGuildMemberEvent removeGuildMemberEvent:
+                            await services.GetRequiredService<IUserService>().DeleteUserAsync(removeGuildMemberEvent.UserId, removeGuildMemberEvent.GuildId, cancellationToken);
+                            break;
+
                         default:
                             throw new ArgumentOutOfRangeException(nameof(workEvent));
                     }
