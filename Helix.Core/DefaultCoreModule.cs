@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Helix.BackgroundWorker;
 using Helix.Core.Abstractions;
 using Helix.Core.Services;
 using Helix.Domain;
@@ -14,8 +15,7 @@ namespace Helix.Core
         {
             services.AddLazyCache();
             services.AddDefaultDomainModule(configuration);
-            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
-            services.AddHostedService<BackgroundWorkerService>();
+            services.AddDefaultBackgroundWorker();
             services.AddScoped<IGuildService, GuildService>();
             services.AddScoped<IUserService, UserService>();
             

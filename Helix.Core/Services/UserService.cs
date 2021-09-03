@@ -26,7 +26,7 @@ namespace Helix.Core.Services
             _logger = logger;
         }
 
-        public async Task<ServiceResponse<User>> AddUserAsync(ulong userId, ulong guildId, DateTime firstSeen, CancellationToken cancellationToken = default)
+        public async ValueTask<ServiceResponse<User>> AddUserAsync(ulong userId, ulong guildId, DateTime firstSeen, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -38,7 +38,8 @@ namespace Helix.Core.Services
                 {
                     UserId = userId,
                     GuildId = guildId,
-                    FirstSeen = DateTime.Now,
+                    FirstSeen = firstSeen,
+                    LastSeen = firstSeen
                 };
 
                 var addedEntity = await _dbContext.AddAsync(user, cancellationToken);
@@ -55,7 +56,7 @@ namespace Helix.Core.Services
             }
         }
 
-        public async Task<ServiceResponse<User>> GetUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
+        public async ValueTask<ServiceResponse<User>> GetUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
         {
             var userExist = await UserExistAsync(userId, guildId, cancellationToken);
             if (!userExist.Entity)
@@ -70,7 +71,7 @@ namespace Helix.Core.Services
             return ServiceResponse<User>.Ok(user);
         }
 
-        public async Task<ServiceResponse> DeleteUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
+        public async ValueTask<ServiceResponse> DeleteUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -94,7 +95,7 @@ namespace Helix.Core.Services
             }
         }
 
-        public async Task<ServiceResponse<bool>> UserExistAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
+        public async ValueTask<ServiceResponse<bool>> UserExistAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
         {
             var userExists = _appCache.Get<ServiceResponse<bool>>($"userExist:{userId}:{guildId}");
             if (userExists is not null)

@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using Helix.BackgroundWorker.Abstractions;
 using Helix.Core.Abstractions;
 using Remora.Discord.API.Abstractions.Gateway.Events;
 using Remora.Discord.Gateway.Responders;
@@ -9,19 +10,16 @@ namespace Helix.Core.Responders
 {
     public class GuildReadyResponder : IResponder<IGuildCreate>
     {
-        private readonly IGuildService _guildService;
-        private readonly IBackgroundTaskQueue _backgroundTask;
+        private readonly IWorkQueueService _workQueueService;
 
-        public GuildReadyResponder(IGuildService guildService, IBackgroundTaskQueue backgroundTask)
+        public GuildReadyResponder(IWorkQueueService workQueueService)
         {
-            _guildService = guildService;
-            _backgroundTask = backgroundTask;
+            _workQueueService = workQueueService;
         }
         
         public async Task<Result> RespondAsync(IGuildCreate gatewayEvent, CancellationToken ct = new CancellationToken())
         {
-            await _backgroundTask.QueueAsync(new AddGuildEvent(gatewayEvent.ID.Value));
-            //await _guildService.AddGuildAsync(gatewayEvent.ID.Value, ct);
+            await _workQueueService.QueueAsync<IGuildService>(async x => await x.AddGuildAsync(gatewayEvent.ID.Value, ct));
             return Result.FromSuccess();
         }
     }
