@@ -24,12 +24,8 @@
 </ItemGroup>
 
 <ItemGroup>
+  <ProjectReference Include="..\Helix.BackgroundWorker\Helix.BackgroundWorker.csproj" />
   <ProjectReference Include="..\Helix.Domain\Helix.Domain.csproj" />
-</ItemGroup>
-
-<ItemGroup>
-  <Folder Include="Abstractions\" />
-  <Folder Include="Services\" />
 </ItemGroup>
 
 </Project>
