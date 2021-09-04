@@ -44,6 +44,7 @@ namespace Helix.BackgroundWorker.Services
 
                 try
                 {
+                    _logger.LogDebug("Queuing {task}", task);
                     await task(myService);
                 }
                 catch (Exception ex)
