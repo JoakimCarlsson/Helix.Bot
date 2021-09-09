@@ -3,6 +3,7 @@ using Helix.BackgroundWorker;
 using Helix.Bot.Extensions;
 using Helix.Bot.Helpers;
 using Helix.Bot.Helpers.Abstractions;
+using Helix.Bot.Infrastructure;
 using Helix.Domain;
 using Helix.Services;
 using Microsoft.Extensions.Configuration;

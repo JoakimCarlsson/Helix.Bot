@@ -73,15 +73,10 @@ namespace Helix.Services.Services
 
         public async Task<ServiceResponse<IEnumerable<UserReminder>>> GetAllRemindersAsync(CancellationToken cancellationToken = default)
         {
-            var userReminders = _appCache.Get<List<UserReminder>>("AllReminders");
-            if (userReminders is not null)
-                return ServiceResponse<IEnumerable<UserReminder>>.Ok(userReminders);
-
-            userReminders = await _dbContext.Reminders.ToListAsync(cancellationToken);
+            var userReminders = await _dbContext.Reminders.ToListAsync(cancellationToken);
             if (!userReminders.Any())
                 return ServiceResponse<IEnumerable<UserReminder>>.Fail(new ErrorResult("No reminders saved in the DB"));
 
-            _appCache.Add("AllReminders", userReminders, TimeSpan.FromHours(5));
             return ServiceResponse<IEnumerable<UserReminder>>.Ok(userReminders);
         }
 
