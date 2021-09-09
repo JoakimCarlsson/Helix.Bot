@@ -53,7 +53,7 @@ namespace Helix.Services.Services
 
         public async Task<ServiceResponse<bool>> GuildExistsAsync(ulong guildId, CancellationToken cancellationToken = default)
         {
-            var guild = await _dbContext.Guilds.FirstOrDefaultAsync(x => x.Id == guildId, cancellationToken);
+            var guild = await _dbContext.Guilds.AsNoTracking().FirstOrDefaultAsync(x => x.Id == guildId, cancellationToken);
             if (guild is null)
                 return ServiceResponse<bool>.Ok(false);
 

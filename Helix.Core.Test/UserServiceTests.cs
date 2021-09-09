@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Helix.Domain.Data;
@@ -12,18 +13,11 @@ using Xunit;
 
 namespace Helix.Bot.Test
 {
-    public class UserServiceTests
+    public class UserServiceTests : IAsyncLifetime
     {
-        private readonly HelixDbContext _dbContext;
-        private readonly IAppCache _appCache;
-        private readonly Mock<ILogger<UserService>> _loggerMock;
-
-        public UserServiceTests()
-        {
-            _dbContext = CreateDbContext();
-            _appCache = new CachingService();
-            _loggerMock = new Mock<ILogger<UserService>>();
-        }
+        private HelixDbContext _dbContext;
+        private IAppCache _appCache;
+        private Mock<ILogger<UserService>> _loggerMock;
 
         [Fact]
         public async Task GetUserShouldReturnUser()
@@ -274,8 +268,29 @@ namespace Helix.Bot.Test
             dbContext.Add(user);
             dbContext.Add(userOne);
             dbContext.SaveChanges();
-            
+
+            dbContext.ChangeTracker.Clear();
             return dbContext;
+        }
+
+        public Task InitializeAsync()
+        {
+            _dbContext = CreateDbContext();
+            _appCache = new CachingService();
+            _loggerMock = new Mock<ILogger<UserService>>();
+            return Task.CompletedTask;
+        }
+
+        public Task DisposeAsync()
+        {
+            var dbName = _dbContext.Database.GetDbConnection().DataSource;
+            _dbContext.Dispose();
+
+            var fileExist = File.Exists(dbName);
+            if (fileExist)
+                File.Delete(dbName);
+
+            return Task.CompletedTask;
         }
     }
 }

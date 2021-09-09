@@ -64,7 +64,7 @@ namespace Helix.Services.Services
             if (user is not null)
                 return ServiceResponse<User>.Ok(user);
 
-            user = _dbContext.Users.First(x => x.UserId == userId && x.GuildId == guildId);
+            user = _dbContext.Users.AsNoTracking().First(x => x.UserId == userId && x.GuildId == guildId);
             _appCache.Add($"user:{userId}:{guildId}", user, TimeSpan.FromHours(1));
             return ServiceResponse<User>.Ok(user);
         }
@@ -99,7 +99,7 @@ namespace Helix.Services.Services
             if (userExists is not null)
                 return userExists;
 
-            var exists = await _dbContext.Users.AnyAsync(x => x.UserId == userId && x.GuildId == guildId, cancellationToken);
+            var exists = await _dbContext.Users.AsNoTracking().AnyAsync(x => x.UserId == userId && x.GuildId == guildId, cancellationToken);
 
             var response = ServiceResponse<bool>.Ok(exists);
 
