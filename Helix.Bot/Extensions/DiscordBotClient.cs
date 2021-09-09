@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Helix.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Remora.Commands.Extensions;
@@ -29,8 +28,6 @@ namespace Helix.Bot.Extensions
                 .AddDiscordCaching()
                 .AddCommands()
                 .Configure<CommandResponderOptions>(o => o.Prefix = ">!");
-
-            services.AddDefaultCoreModule(configuration);
 
             services.AddInteractionResponder(x => x.SuppressAutomaticResponses = suppressAutomaticResponses);
 

@@ -1,17 +1,15 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Helix.Core.Abstractions;
-using Helix.Core.Response;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
+using Helix.Services.Abstractions;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Helix.Core.Services
+namespace Helix.Services.Services
 {
     public class UserService : IUserService
     {
@@ -26,7 +24,7 @@ namespace Helix.Core.Services
             _logger = logger;
         }
 
-        public async ValueTask<ServiceResponse<User>> AddUserAsync(ulong userId, ulong guildId, DateTime firstSeen, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<User>> AddUserAsync(ulong userId, ulong guildId, DateTime firstSeen, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -56,7 +54,7 @@ namespace Helix.Core.Services
             }
         }
 
-        public async ValueTask<ServiceResponse<User>> GetUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<User>> GetUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
         {
             var userExist = await UserExistAsync(userId, guildId, cancellationToken);
             if (!userExist.Entity)
@@ -66,12 +64,12 @@ namespace Helix.Core.Services
             if (user is not null)
                 return ServiceResponse<User>.Ok(user);
 
-            user = _dbContext.Users.First(x => x.UserId == userId && x.GuildId == guildId);
+            user = _dbContext.Users.AsNoTracking().First(x => x.UserId == userId && x.GuildId == guildId);
             _appCache.Add($"user:{userId}:{guildId}", user, TimeSpan.FromHours(1));
             return ServiceResponse<User>.Ok(user);
         }
 
-        public async ValueTask<ServiceResponse> DeleteUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse> DeleteUserAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -95,16 +93,15 @@ namespace Helix.Core.Services
             }
         }
 
-        public async ValueTask<ServiceResponse<bool>> UserExistAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<bool>> UserExistAsync(ulong userId, ulong guildId, CancellationToken cancellationToken = default)
         {
             var userExists = _appCache.Get<ServiceResponse<bool>>($"userExist:{userId}:{guildId}");
             if (userExists is not null)
                 return userExists;
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserId == userId && x.GuildId == guildId, cancellationToken);
-            ServiceResponse<bool> response = null;
+            var exists = await _dbContext.Users.AsNoTracking().AnyAsync(x => x.UserId == userId && x.GuildId == guildId, cancellationToken);
 
-            response = ServiceResponse<bool>.Ok(user is not null);
+            var response = ServiceResponse<bool>.Ok(exists);
 
             _appCache.Add($"userExist:{userId}:{guildId}", response, TimeSpan.FromHours(1));
             

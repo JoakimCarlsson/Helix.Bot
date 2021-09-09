@@ -1,4 +1,4 @@
-namespace Helix.Core.Abstractions
+namespace Helix.Services.Abstractions
 {
     public interface IServiceResponse
     {

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
-using Helix.Core.Response;
-using Helix.Core.Services;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
+using Helix.Services.Services;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

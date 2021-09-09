@@ -1,16 +1,14 @@
 using System;
-using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
-using Helix.Core.Abstractions;
-using Helix.Core.Response;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
+using Helix.Services.Abstractions;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Helix.Core.Services
+namespace Helix.Services.Services
 {
     public class GuildService : IGuildService
     {
@@ -25,7 +23,7 @@ namespace Helix.Core.Services
             _logger = logger;
         }
 
-        public async ValueTask<ServiceResponse<Guild>> AddGuildAsync(ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<Guild>> AddGuildAsync(ulong guildId, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -53,9 +51,9 @@ namespace Helix.Core.Services
             }
         }
 
-        public async ValueTask<ServiceResponse<bool>> GuildExistsAsync(ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<bool>> GuildExistsAsync(ulong guildId, CancellationToken cancellationToken = default)
         {
-            var guild = await _dbContext.Guilds.FirstOrDefaultAsync(x => x.Id == guildId, cancellationToken);
+            var guild = await _dbContext.Guilds.AsNoTracking().FirstOrDefaultAsync(x => x.Id == guildId, cancellationToken);
             if (guild is null)
                 return ServiceResponse<bool>.Ok(false);
 

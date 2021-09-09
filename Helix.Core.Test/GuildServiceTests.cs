@@ -1,30 +1,24 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Helix.Core.Services;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
+using Helix.Services.Services;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
-namespace Helix.Core.Test
+namespace Helix.Bot.Test
 {
-    public class GuildServiceTests
+    public class GuildServiceTests : IAsyncLifetime
     {
-        private readonly HelixDbContext _dbContext;
-        private readonly IAppCache _appCache;
-        private readonly Mock<ILogger<GuildService>> _loggerMock;
+        private HelixDbContext _dbContext;
+        private IAppCache _appCache;
+        private Mock<ILogger<GuildService>> _loggerMock;
 
-        public GuildServiceTests()
-        {
-            _dbContext = CreateDbContext();
-            _appCache = new CachingService();
-            _loggerMock = new Mock<ILogger<GuildService>>();
-        }
-        
         [Fact]
         public async Task AddGuildShouldAddValidGuild()
         {
@@ -115,5 +109,25 @@ namespace Helix.Core.Test
             dbContext.Database.Migrate();
             return dbContext;
         }
+
+      public Task InitializeAsync()
+      {
+          _dbContext = CreateDbContext();
+          _appCache = new CachingService();
+          _loggerMock = new Mock<ILogger<GuildService>>();
+          return Task.CompletedTask;
+        }
+
+      public Task DisposeAsync()
+      {
+          var dbName = _dbContext.Database.GetDbConnection().DataSource;
+          _dbContext.Dispose();
+
+          var fileExist = File.Exists(dbName);
+          if (fileExist)
+              File.Delete(dbName);
+
+            return Task.CompletedTask;
+      }
     }
 }

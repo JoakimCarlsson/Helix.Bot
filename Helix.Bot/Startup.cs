@@ -1,4 +1,7 @@
-﻿using Helix.Bot.Extensions;
+﻿using Helix.BackgroundWorker;
+using Helix.Bot.Extensions;
+using Helix.Domain;
+using Helix.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +19,9 @@ namespace Helix.Bot
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddDefaultBackgroundWorker()
+                .AddDefaultDomainModule(_configuration)
+                .AddDefaultServices(_configuration)
                 .AddDiscordBotClient(_configuration, true)
                 .AddHostedService<BotClient>();
         }

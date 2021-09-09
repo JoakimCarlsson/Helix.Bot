@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Helix.Core\Helix.Core.csproj" />
+      <ProjectReference Include="..\Helix.Bot\Helix.Bot.csproj" />
     </ItemGroup>
 
 </Project>
