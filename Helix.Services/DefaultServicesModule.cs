@@ -19,7 +19,8 @@ namespace Helix.Services
                 .AddLazyCache()
                 .AddDefaultDomainModule(configuration)
                 .AddTransient<IGuildService, GuildService>()
-                .AddTransient<IUserService, UserService>();
+                .AddTransient<IUserService, UserService>()
+                .AddTransient<IUserReminderService, UserReminderService>();
 
             return services;
         }
