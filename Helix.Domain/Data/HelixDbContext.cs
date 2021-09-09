@@ -10,5 +10,6 @@ namespace Helix.Domain.Data
         public DbSet<Guild> Guilds { get; set; }
         public DbSet<GuildConfiguration> GuildConfigurations { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserReminder> Reminders {  get; set; }
     }
 }

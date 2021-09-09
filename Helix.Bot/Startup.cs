@@ -1,9 +1,15 @@
-﻿using Helix.BackgroundWorker;
+﻿using System;
+using Helix.BackgroundWorker;
 using Helix.Bot.Extensions;
+using Helix.Bot.Helpers;
+using Helix.Bot.Helpers.Abstractions;
+using Helix.Bot.Infrastructure;
 using Helix.Domain;
 using Helix.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Remora.Commands.Extensions;
+using Remora.Commands.Parsers;
 
 namespace Helix.Bot
 {
@@ -23,6 +29,8 @@ namespace Helix.Bot
                 .AddDefaultDomainModule(_configuration)
                 .AddDefaultServices(_configuration)
                 .AddDiscordBotClient(_configuration, true)
+                .AddTransient<IRespondService, RespondService>()
+                .AddHostedService<ReminderBackgroundService>()
                 .AddHostedService<BotClient>();
         }
     }
