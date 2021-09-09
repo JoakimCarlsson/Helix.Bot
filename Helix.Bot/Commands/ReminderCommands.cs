@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +9,12 @@ using Helix.Services.Abstractions;
 using Humanizer;
 using Remora.Commands.Attributes;
 using Remora.Commands.Groups;
+using Remora.Discord.API;
 using Remora.Discord.API.Abstractions.Objects;
 using Remora.Discord.API.Objects;
 using Remora.Discord.Commands.Conditions;
 using Remora.Discord.Commands.Contexts;
+using Remora.Discord.Core;
 using Remora.Results;
 
 namespace Helix.Bot.Commands
@@ -46,9 +49,34 @@ namespace Helix.Bot.Commands
         }
 
         [Command("get"), Description("Get's an reminder by id.")]
-        public Task<IResult> GetReminderAsync([Description("The ID of the reminder you want to get.")] int id)
+        public async Task<IResult> GetReminderAsync([Description("The ID of the reminder you want to get.")] int id)
         {
-            return Task.FromResult<IResult>(Result.FromSuccess());
+            var reminderResponse = await _userReminderService.GetReminderAsync(id, CancellationToken);
+
+            if (!reminderResponse.Success)
+                return await _respondService.RespondWithErrorEmbedAsync(reminderResponse.Errors.ErrorMessage, CancellationToken);
+
+            var author = new EmbedAuthor
+            {
+                Name = $"Reminder [{reminderResponse.Entity.Id}]"
+            };
+
+            var fields = new List<EmbedField>
+            {
+                new EmbedField("Created At", DateFormatter.RelativeTime(reminderResponse.Entity.CreatedAt), true),
+                new EmbedField("Remind At", DateFormatter.RelativeTime(reminderResponse.Entity.RemindAt), true)
+            };
+
+            var embed = new Embed
+            {
+                Author = author,
+                Description = $"{TextFormatter.Bold("Reminder Content:")}\n{reminderResponse.Entity.Content}",
+                Fields = fields,
+            };
+
+            var result = await _respondService.RespondWithEmbedAsync(embed, CancellationToken);
+
+            return result.IsSuccess ? Result.FromSuccess() : Result.FromError(result.Error);
         }
 
 
