@@ -25,7 +25,7 @@ namespace Helix.Core.Services
             _logger = logger;
         }
 
-        public async ValueTask<ServiceResponse<Guild>> AddGuildAsync(ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<Guild>> AddGuildAsync(ulong guildId, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Helix.Core.Services
             }
         }
 
-        public async ValueTask<ServiceResponse<bool>> GuildExistsAsync(ulong guildId, CancellationToken cancellationToken = default)
+        public async Task<ServiceResponse<bool>> GuildExistsAsync(ulong guildId, CancellationToken cancellationToken = default)
         {
             var guild = await _dbContext.Guilds.FirstOrDefaultAsync(x => x.Id == guildId, cancellationToken);
             if (guild is null)
