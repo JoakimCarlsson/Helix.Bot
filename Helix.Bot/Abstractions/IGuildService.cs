@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Helix.Core.Response;
+using Helix.Bot.Response;
 using Helix.Domain.Models;
 
-namespace Helix.Core.Abstractions
+namespace Helix.Bot.Abstractions
 {
     public interface IGuildService
     {

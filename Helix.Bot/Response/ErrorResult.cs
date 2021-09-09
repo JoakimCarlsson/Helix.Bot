@@ -1,6 +1,6 @@
-using Helix.Core.Abstractions;
+using Helix.Bot.Abstractions;
 
-namespace Helix.Core.Response
+namespace Helix.Bot.Response
 {
     public class ErrorResult : IError
     {

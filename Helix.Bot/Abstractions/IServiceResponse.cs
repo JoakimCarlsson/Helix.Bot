@@ -1,4 +1,4 @@
-namespace Helix.Core.Abstractions
+namespace Helix.Bot.Abstractions
 {
     public interface IServiceResponse
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
-using Helix.Core.Response;
-using Helix.Core.Services;
+using Helix.Bot.Response;
+using Helix.Bot.Services;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
 using LazyCache;

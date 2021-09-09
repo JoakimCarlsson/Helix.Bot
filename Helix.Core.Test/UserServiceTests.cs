@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Bogus.DataSets;
 using FluentAssertions;
-using Helix.Core.Response;
-using Helix.Core.Services;
+using Helix.Bot.Response;
+using Helix.Bot.Services;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
 using LazyCache;
@@ -12,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
-namespace Helix.Core.Test
+namespace Helix.Bot.Test
 {
     public class UserServiceTests
     {

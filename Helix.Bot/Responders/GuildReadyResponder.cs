@@ -1,12 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Helix.BackgroundWorker.Abstractions;
-using Helix.Core.Abstractions;
+using Helix.Bot.Abstractions;
 using Remora.Discord.API.Abstractions.Gateway.Events;
 using Remora.Discord.Gateway.Responders;
 using Remora.Results;
 
-namespace Helix.Core.Responders
+namespace Helix.Bot.Responders
 {
     public class GuildReadyResponder : IResponder<IGuildCreate>
     {

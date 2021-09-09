@@ -1,17 +1,16 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Helix.Core.Abstractions;
-using Helix.Core.Response;
+using Helix.Bot.Abstractions;
+using Helix.Bot.Response;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Helix.Core.Services
+namespace Helix.Bot.Services
 {
     public class UserService : IUserService
     {
