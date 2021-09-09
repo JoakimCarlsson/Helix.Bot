@@ -19,6 +19,7 @@ namespace Helix.Bot
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddDefaultBackgroundWorker()
                 .AddDefaultDomainModule(_configuration)
                 .AddDefaultServices(_configuration)
                 .AddDiscordBotClient(_configuration, true)

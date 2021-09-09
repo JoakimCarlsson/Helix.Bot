@@ -246,6 +246,7 @@ namespace Helix.Bot.Test
         public HelixDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<HelixDbContext>().UseSqlite($"Data Source=Helix-Test{Guid.NewGuid()}.db;");
+            optionsBuilder.EnableSensitiveDataLogging();
             var dbContext = new HelixDbContext(optionsBuilder.Options);
             dbContext.Database.Migrate();
 

@@ -99,10 +99,9 @@ namespace Helix.Services.Services
             if (userExists is not null)
                 return userExists;
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.UserId == userId && x.GuildId == guildId, cancellationToken);
-            ServiceResponse<bool> response = null;
+            var exists = await _dbContext.Users.AnyAsync(x => x.UserId == userId && x.GuildId == guildId, cancellationToken);
 
-            response = ServiceResponse<bool>.Ok(user is not null);
+            var response = ServiceResponse<bool>.Ok(exists);
 
             _appCache.Add($"userExist:{userId}:{guildId}", response, TimeSpan.FromHours(1));
             

@@ -20,6 +20,7 @@ namespace Helix.Services
                 .AddDefaultDomainModule(configuration)
                 .AddTransient<IGuildService, GuildService>()
                 .AddTransient<IUserService, UserService>();
+
             return services;
         }
     }
