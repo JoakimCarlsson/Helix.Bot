@@ -29,6 +29,7 @@ namespace Helix.Bot
                 .AddDefaultServices(_configuration)
                 .AddDiscordBotClient(_configuration, true)
                 .AddTransient<IRespondService, RespondService>()
+                .AddHostedService<ReminderBackgroundService>()
                 .AddHostedService<BotClient>();
         }
     }
