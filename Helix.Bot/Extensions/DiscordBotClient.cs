@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Helix.Bot.Commands;
+using Helix.Bot.Parsers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Remora.Commands.Extensions;
@@ -27,6 +30,8 @@ namespace Helix.Bot.Extensions
                 .AddDiscordCommands(true)
                 .AddDiscordCaching()
                 .AddCommands()
+                .AddCommandGroup<ReminderCommands>()
+                .AddParser<TimeSpan, TimeSpanParser>()
                 .Configure<CommandResponderOptions>(o => o.Prefix = ">!");
 
             services.AddInteractionResponder(x => x.SuppressAutomaticResponses = suppressAutomaticResponses);
