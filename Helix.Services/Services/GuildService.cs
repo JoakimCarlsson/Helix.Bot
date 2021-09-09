@@ -1,15 +1,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Helix.Bot.Abstractions;
-using Helix.Bot.Response;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
+using Helix.Services.Abstractions;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Helix.Bot.Services
+namespace Helix.Services.Services
 {
     public class GuildService : IGuildService
     {

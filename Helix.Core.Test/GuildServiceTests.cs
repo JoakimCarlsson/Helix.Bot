@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Helix.Bot.Services;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
+using Helix.Services.Services;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

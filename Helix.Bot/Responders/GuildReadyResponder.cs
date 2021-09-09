@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Helix.BackgroundWorker.Abstractions;
-using Helix.Bot.Abstractions;
+using Helix.Services.Abstractions;
 using Remora.Discord.API.Abstractions.Gateway.Events;
 using Remora.Discord.Gateway.Responders;
 using Remora.Results;
