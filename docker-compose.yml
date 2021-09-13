@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    restart: always
+    ports:
+      - '5433:5432'
+    container_name: helix-postgresql
+    environment:
+        POSTGRES_USER: helix
+        POSTGRES_PASSWORD: SecretPass123!
+        POSTGRES_DB: helixdb
+    volumes:
+      - 'helix-postgresql-volume:/var/lib/postgresql/data'
+    image: 'postgres:latest'
+    networks:
+       myApp-network:
+         aliases:
+           - helixpostgress
+
+  helix.bot:
+    image: ${DOCKER_REGISTRY-}helixbot
+    build:
+      context: .
+      dockerfile: Helix.Bot/Dockerfile
+    networks:
+      - myApp-network
+    depends_on:
+      - 'postgres'
+
+
+networks:
+  myApp-network:
+    driver: bridge
+
+volumes:
+  helix-postgresql-volume:
