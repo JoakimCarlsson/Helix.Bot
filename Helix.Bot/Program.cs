@@ -44,7 +44,7 @@ namespace Helix.Bot
                     outputTemplate:
                     "[{Timestamp:HH:mm:ss} {Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
                     theme: AnsiConsoleTheme.Code)
-                .WriteTo.File("Logs/log.json",
+                .WriteTo.File("Logs/log.txt",
                     outputTemplate:
                     "[{Timestamp:HH:mm:ss} {Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
                     rollingInterval: RollingInterval.Day).CreateLogger();

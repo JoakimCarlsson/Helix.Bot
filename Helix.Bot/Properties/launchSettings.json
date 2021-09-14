@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Helix.Bot": {
+      "commandName": "Project"
+    },
+    "Docker (1)": {
+      "commandName": "Docker"
+    }
+  }
+}
