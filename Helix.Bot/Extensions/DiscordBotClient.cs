@@ -31,7 +31,7 @@ namespace Helix.Bot.Extensions
                 .AddDiscordCaching()
                 .AddCommands()
                 .AddCommandGroup<ReminderCommands>()
-                .AddParser<TimeSpan, TimeSpanParser>()
+                .AddParser<TimeSpanParser>()
                 .Configure<CommandResponderOptions>(o => o.Prefix = ">!");
 
             services.AddInteractionResponder(x => x.SuppressAutomaticResponses = suppressAutomaticResponses);

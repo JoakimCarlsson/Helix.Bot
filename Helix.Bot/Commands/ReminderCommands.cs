@@ -56,10 +56,7 @@ namespace Helix.Bot.Commands
             if (!reminderResponse.Success)
                 return await _respondService.RespondWithErrorEmbedAsync(reminderResponse.Errors.ErrorMessage, CancellationToken);
 
-            var author = new EmbedAuthor
-            {
-                Name = $"Reminder [{reminderResponse.Entity.Id}]"
-            };
+            var author = new EmbedAuthor($"Reminder [{reminderResponse.Entity.Id}]");
 
             var fields = new List<EmbedField>
             {

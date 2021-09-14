@@ -32,7 +32,7 @@ namespace Helix.Bot.Parsers
             "%s's'",                // 1s
         };
 
-        public override ValueTask<Result<TimeSpan>> TryParse(string value, CancellationToken ct)
+        public ValueTask<Result<TimeSpan>> TryParse(string value, CancellationToken ct)
         {
             return new(
                 TimeSpan.TryParseExact(value.ToLowerInvariant(), Formats, CultureInfo.InvariantCulture,
