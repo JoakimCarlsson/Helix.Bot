@@ -16,10 +16,10 @@ namespace Helix.Bot.Extensions
                 hostBuilder.ConfigureServices((ctx, serviceCollection) =>
                 {
                     var cfgServicesMethod = typeof(TStartup).GetMethod(
-                        ConfigureServicesMethodName, new Type[] { typeof(IServiceCollection) });
+                        ConfigureServicesMethodName, new[] { typeof(IServiceCollection) });
 
                     var hasConfigCtor = typeof(TStartup).GetConstructor(
-                        new Type[] { typeof(IConfiguration) }) != null;
+                        new[] { typeof(IConfiguration) }) != null;
 
                     var startUpObj = hasConfigCtor ?
                         (TStartup)Activator.CreateInstance(typeof(TStartup), ctx.Configuration) :

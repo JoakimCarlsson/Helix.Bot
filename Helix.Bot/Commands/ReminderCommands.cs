@@ -9,12 +9,10 @@ using Helix.Services.Abstractions;
 using Humanizer;
 using Remora.Commands.Attributes;
 using Remora.Commands.Groups;
-using Remora.Discord.API;
 using Remora.Discord.API.Abstractions.Objects;
 using Remora.Discord.API.Objects;
 using Remora.Discord.Commands.Conditions;
 using Remora.Discord.Commands.Contexts;
-using Remora.Discord.Core;
 using Remora.Results;
 
 namespace Helix.Bot.Commands
@@ -43,7 +41,7 @@ namespace Helix.Bot.Commands
             if (serviceResponse.Success)
                 result = await _respondService.RespondWithSuccessEmbedAsync($"Great, i'll remind you in: {DateFormatter.RelativeTime(DateTime.Now.Add(remindAt))}");
             else
-                result = await _respondService.RespondWithErrorEmbedAsync(serviceResponse.Errors.ErrorMessage);
+                result = await _respondService.RespondWithErrorEmbedAsync(serviceResponse.Errors?.ErrorMessage);
 
             return result.IsSuccess ? Result.FromSuccess() : Result.FromError(result.Error);
         }
@@ -54,7 +52,7 @@ namespace Helix.Bot.Commands
             var reminderResponse = await _userReminderService.GetReminderAsync(id, CancellationToken);
 
             if (!reminderResponse.Success)
-                return await _respondService.RespondWithErrorEmbedAsync(reminderResponse.Errors.ErrorMessage, CancellationToken);
+                return await _respondService.RespondWithErrorEmbedAsync(reminderResponse.Errors?.ErrorMessage, CancellationToken);
 
             var author = new EmbedAuthor($"Reminder [{reminderResponse.Entity.Id}]");
 
@@ -102,7 +100,7 @@ namespace Helix.Bot.Commands
             }
             else
             {
-                result = await _respondService.RespondWithErrorEmbedAsync(serviceResponse.Errors.ErrorMessage, CancellationToken);
+                result = await _respondService.RespondWithErrorEmbedAsync(serviceResponse.Errors?.ErrorMessage, CancellationToken);
             }
             return result.IsSuccess ? Result.FromSuccess() : Result.FromError(result.Error);
         }
@@ -133,7 +131,7 @@ namespace Helix.Bot.Commands
             }
             else
             {
-                result = await _respondService.RespondWithErrorEmbedAsync(serviceResponse.Errors.ErrorMessage, CancellationToken);
+                result = await _respondService.RespondWithErrorEmbedAsync(serviceResponse.Errors?.ErrorMessage, CancellationToken);
             }
             return result.IsSuccess ? Result.FromSuccess() : Result.FromError(result.Error);
         }
@@ -147,7 +145,7 @@ namespace Helix.Bot.Commands
             if (serviceResponse.Success)
                 result = await _respondService.RespondWithSuccessEmbedAsync($"Deleted reminder with ID: {id}");
             else
-                result = await _respondService.RespondWithErrorEmbedAsync(serviceResponse.Errors.ErrorMessage);
+                result = await _respondService.RespondWithErrorEmbedAsync(serviceResponse.Errors?.ErrorMessage);
 
             return result.IsSuccess ? Result.FromSuccess() : Result.FromError(result.Error);
         }
