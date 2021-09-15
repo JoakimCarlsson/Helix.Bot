@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using Bogus;
 using FluentAssertions;
 using Helix.Domain.Data;
 using Helix.Domain.Models;
@@ -20,7 +21,7 @@ namespace Helix.UserReminderServices.Test
 
         public UserReminderServiceTests()
         {
-            _appCache = new LazyCache.CachingService();
+            _appCache = new CachingService();
             _dbContext = CreateDbContext();
         }
 
@@ -49,6 +50,111 @@ namespace Helix.UserReminderServices.Test
 
             //Assert
             actual.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task GetAllRemindersShouldReturnAllRemindersInDb()
+        {
+            //Arrange
+            var sut = new UserReminderService(_dbContext, _appCache);
+            var expected = new Faker<UserReminder>()
+                .RuleFor(u => u.Content, f => f.Lorem.Paragraph().ToString())
+                .RuleFor(u => u.ChannelId, f => f.Random.ULong(1, 200000))
+                .RuleFor(u => u.GuildId, f => f.Random.ULong(1, 200000))
+                .RuleFor(u => u.UserId, f => f.Random.ULong(1, 200000))
+                .RuleFor(u => u.RemindAt, f => f.Date.Future())
+                .RuleFor(u => u.CreatedAt, f => f.Date.Past())
+                .Generate(10);
+            await _dbContext.AddRangeAsync(expected);
+            await _dbContext.SaveChangesAsync();
+
+            //Act
+            var actual = await sut.GetAllRemindersAsync();
+
+            //Assert
+            actual.Should().NotBeNull();
+            actual.Success.Should().BeTrue();
+            actual.Entity.Should().NotBeNull().And.HaveCount(10);
+            actual.Entity.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public async Task GetAllRemindersShouldReturnErrorIfEmpty()
+        {
+            //Arrange
+            var sut = new UserReminderService(_dbContext, _appCache);
+
+            //Act
+            var actual = await sut.GetAllRemindersAsync();
+
+            //Assert
+            actual.Should().NotBeNull();
+            actual.Success.Should().BeFalse();
+            actual.Errors.ErrorMessage.Should().Be("No reminders saved in the DB");
+        }
+
+        [Fact]
+        public async Task GetAllRemindersInGuildShouldReturnAllRemindersInGuild()
+        {
+            //Arrange
+            var sut = new UserReminderService(_dbContext, _appCache);
+            var expected = new Faker<UserReminder>()
+                .RuleFor(u => u.Content, f => f.Lorem.Paragraph().ToString())
+                .RuleFor(u => u.ChannelId, f => f.Random.ULong(1, 200000))
+                .RuleFor<ulong>(u => u.GuildId, 500)
+                .RuleFor(u => u.UserId, f => f.Random.ULong(1, 200000))
+                .RuleFor(u => u.RemindAt, f => f.Date.Future())
+                .RuleFor(u => u.CreatedAt, f => f.Date.Past())
+                .Generate(10);
+
+            var uselessReminders = new Faker<UserReminder>()
+                .RuleFor(u => u.Content, f => f.Lorem.Paragraph().ToString())
+                .RuleFor(u => u.ChannelId, f => f.Random.ULong(1, 200000))
+                .RuleFor(u => u.GuildId, f => f.Random.ULong(1, 200000))
+                .RuleFor(u => u.UserId, f => f.Random.ULong(1, 200000))
+                .RuleFor(u => u.RemindAt, f => f.Date.Future())
+                .RuleFor(u => u.CreatedAt, f => f.Date.Past())
+                .Generate(10);
+
+            await _dbContext.AddRangeAsync(expected);
+            await _dbContext.AddRangeAsync(uselessReminders);
+            await _dbContext.SaveChangesAsync();
+
+            //Act
+            var actual = await sut.GetAllRemindersInGuildAsync(500);
+
+            //Assert
+            actual.Should().NotBeNull();
+            actual.Success.Should().BeTrue();
+            actual.Entity.Should().NotBeNull().And.HaveCount(10);
+            actual.Entity.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public async Task GetAllRemindersInGuildShouldReturnErrorInNoneExists()
+        {
+            //Arrange
+            var sut = new UserReminderService(_dbContext, _appCache);
+
+            var uselessReminders = new Faker<UserReminder>()
+                .RuleFor(u => u.Content, f => f.Lorem.Paragraph().ToString())
+                .RuleFor(u => u.ChannelId, f => f.Random.ULong(2, 200000))
+                .RuleFor(u => u.GuildId, f => f.Random.ULong(2, 200000))
+                .RuleFor(u => u.UserId, f => f.Random.ULong(2, 200000))
+                .RuleFor(u => u.RemindAt, f => f.Date.Future())
+                .RuleFor(u => u.CreatedAt, f => f.Date.Past())
+                .Generate(10);
+
+            await _dbContext.AddRangeAsync(uselessReminders);
+            await _dbContext.SaveChangesAsync();
+
+            //Act
+            var actual = await sut.GetAllRemindersInGuildAsync(1);
+
+            //Assert
+            actual.Should().NotBeNull();
+            actual.Success.Should().BeFalse();
+            actual.Errors.ErrorMessage.Should().Be("No reminders have been set in this guild.");
         }
 
         [Fact]
@@ -87,7 +193,6 @@ namespace Helix.UserReminderServices.Test
             var sut = new UserReminderService(_dbContext, _appCache);
 
             //Act
-
             var actual = await sut.AddUserReminderAsync(5, 1, 1, "content", TimeSpan.Zero);
             var expected = await sut.DeleteUserReminderAsync(5, 1, actual.Entity.Id);
 
@@ -102,7 +207,6 @@ namespace Helix.UserReminderServices.Test
             var sut = new UserReminderService(_dbContext, _appCache);
 
             //Act
-
             var actual = await sut.AddUserReminderAsync(5, 1, 1, "content", TimeSpan.Zero);
             var expected = await sut.DeleteUserReminderAsync(1, 1, actual.Entity.Id);
 

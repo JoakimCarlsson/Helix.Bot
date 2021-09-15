@@ -62,7 +62,7 @@ namespace Helix.Services.Services
             {
                 var userReminders = reminders.Entity.Where(x => x.UserId == userId && x.GuildId == guildId);
                 if (!userReminders.Any())
-                    return ServiceResponse<IEnumerable<UserReminder>>.Fail(new ErrorResult("User has not set any reminders in this guild."));
+                    return ServiceResponse<IEnumerable<UserReminder>>.Fail(new ErrorResult("You do not have any reminders set in this guild."));
 
                 return ServiceResponse<IEnumerable<UserReminder>>.Ok(userReminders);
             }

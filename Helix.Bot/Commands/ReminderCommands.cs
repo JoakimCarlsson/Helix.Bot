@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
 using Helix.Bot.Helpers.Abstractions;
@@ -13,11 +14,12 @@ using Remora.Discord.API.Abstractions.Objects;
 using Remora.Discord.API.Objects;
 using Remora.Discord.Commands.Conditions;
 using Remora.Discord.Commands.Contexts;
+using Remora.Discord.Core;
 using Remora.Results;
 
 namespace Helix.Bot.Commands
 {
-    [Group("remind")]
+    [Group("reminder")]
     [RequireContext(ChannelContext.Guild)]
     public class ReminderCommands : CommandGroup
     {
@@ -32,7 +34,7 @@ namespace Helix.Bot.Commands
             _respondService = respondService;
         }
 
-        [Command("me"), Description("Adds a reminder for the using user.")]
+        [Command("set"), Description("Adds a reminder for the using user.")]
         public async Task<IResult> RemindMeAsync([Description("When you want want to be reminded.")] TimeSpan remindAt, [Description("The reminder message.")][Greedy] string message)
         {
             var serviceResponse = await _userReminderService.AddUserReminderAsync(_commandContext.User.ID.Value, _commandContext.GuildID.Value.Value, _commandContext.ChannelID.Value, message, remindAt, CancellationToken);
@@ -58,15 +60,16 @@ namespace Helix.Bot.Commands
 
             var fields = new List<EmbedField>
             {
-                new EmbedField("Created At", DateFormatter.RelativeTime(reminderResponse.Entity.CreatedAt), true),
-                new EmbedField("Remind At", DateFormatter.RelativeTime(reminderResponse.Entity.RemindAt), true)
+                new("Created At", DateFormatter.RelativeTime(reminderResponse.Entity.CreatedAt), true),
+                new("Remind At", DateFormatter.RelativeTime(reminderResponse.Entity.RemindAt), true)
             };
 
             var embed = new Embed
             {
                 Author = author,
-                Description = $"{TextFormatter.Bold("Reminder Content:")}\n{reminderResponse.Entity.Content}",
+                Description = $"{TextFormatter.Bold("Created By:")}\n{MentionFormatter.User(new Snowflake(reminderResponse.Entity.UserId))}\n{TextFormatter.Bold("Reminder Content:")}\n{reminderResponse.Entity.Content}",
                 Fields = fields,
+                Colour = Color.FromArgb(48, 121, 255)
             };
 
             var result = await _respondService.RespondWithEmbedAsync(embed, CancellationToken);
@@ -94,7 +97,9 @@ namespace Helix.Bot.Commands
                 var reminderEmbed = new Embed
                 {
                     Title = "Reminders",
-                    Description = stringBuilder.ToString()
+                    Description = stringBuilder.ToString(),
+                    Colour = Color.FromArgb(48, 121, 255)
+
                 };
                 result = await _respondService.RespondWithEmbedAsync(reminderEmbed, CancellationToken);
             }
@@ -125,7 +130,8 @@ namespace Helix.Bot.Commands
                 var reminderEmbed = new Embed
                 {
                     Title = "Reminders in guild.",
-                    Description = stringBuilder.ToString()
+                    Description = stringBuilder.ToString(),
+                    Colour = Color.FromArgb(48, 121, 255)
                 };
                 result = await _respondService.RespondWithEmbedAsync(reminderEmbed, CancellationToken);
             }
