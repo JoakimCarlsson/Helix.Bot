@@ -1,3 +1,4 @@
+#nullable enable
 using Helix.Services.Abstractions;
 
 namespace Helix.Services.Services
@@ -6,17 +7,17 @@ namespace Helix.Services.Services
     {
         public bool Success { get; }
         public IError? Errors { get; }
-        public TEntity Entity { get; }
+        public TEntity? Entity { get; }
 
-        private ServiceResponse(TEntity? entity, bool success, IError errors)
+        private ServiceResponse(TEntity? entity, bool success, IError? errors)
         {
             Entity = entity;
             Success = success;
             Errors = errors;
         }
 
-        public static ServiceResponse<TEntity> Ok(TEntity entity) => new(entity, true, default);
-        public static ServiceResponse<TEntity> Fail(IError errors) => new(default, false, errors);
+        public static ServiceResponse<TEntity?> Ok(TEntity? entity) => new(entity, true, default);
+        public static ServiceResponse<TEntity> Fail(IError? errors) => new(default, false, errors);
     }
 
     public class ServiceResponse : IServiceResponse
