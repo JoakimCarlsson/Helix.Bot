@@ -1,5 +1,4 @@
-﻿using System;
-using Helix.BackgroundWorker;
+﻿using Helix.BackgroundWorker;
 using Helix.Bot.Extensions;
 using Helix.Bot.Helpers;
 using Helix.Bot.Helpers.Abstractions;
@@ -8,8 +7,6 @@ using Helix.Domain;
 using Helix.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Remora.Commands.Extensions;
-using Remora.Commands.Parsers;
 
 namespace Helix.Bot
 {

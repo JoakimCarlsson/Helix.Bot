@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Helix.Bot.Commands;
 using Helix.Bot.Parsers;
 using Microsoft.Extensions.Configuration;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Helix.Bot.Extensions.Helix.Bot.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -25,7 +24,7 @@ namespace Helix.Bot
         {
             var hostBuilder = Host.CreateDefaultBuilder(args);
 
-            hostBuilder.ConfigureAppConfiguration((hostContext, configuration) =>
+            hostBuilder.ConfigureAppConfiguration((_, configuration) =>
             {
                 configuration.AddUserSecrets<Program>();
             });

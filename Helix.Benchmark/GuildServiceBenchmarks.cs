@@ -6,7 +6,6 @@ using Helix.Domain.Models;
 using Helix.Services.Services;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Helix.Benchmark
 {
@@ -14,13 +13,11 @@ namespace Helix.Benchmark
     public class GuildServiceBenchmarks
     {
         private readonly GuildService _guildService;
-        private readonly IAppCache _appCache;
-        private readonly ILogger<GuildService> _logger;
 
         public GuildServiceBenchmarks()
         {
-            _appCache = new CachingService();
-            _guildService = new GuildService(CreateDbContext(), _appCache, _logger);
+            IAppCache appCache = new CachingService();
+            _guildService = new GuildService(CreateDbContext(), appCache, default);
         }
 
         [Benchmark]
